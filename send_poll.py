@@ -16,9 +16,6 @@ def main():
     tmw = datetime.now(IST) + timedelta(days=1)
 
     # safety net: if the run fires late/wrong and tomorrow is a Sunday, bail out
-    if tmw.weekday() == 6:
-        print("tomorrow is sunday, no shuttle, skipping")
-        return
 
     title = "🏸 Playing tomorrow?"
 
