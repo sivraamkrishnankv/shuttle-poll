@@ -20,7 +20,7 @@ def main():
         print("tomorrow is sunday, no shuttle, skipping")
         return
 
-    title = "🏸 Shuttle tomorrow? You in?"
+    title = "🏸 Playing tomorrow?"
 
     body = {
         "chatId": gid,
