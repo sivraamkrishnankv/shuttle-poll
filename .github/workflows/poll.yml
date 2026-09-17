@@ -1,0 +1,23 @@
+name: shuttle-poll
+
+on:
+  schedule:
+    # 14:30 UTC = 8:00 PM IST (no DST in India), Sunday through Friday
+    - cron: '30 14 * * 0-5'
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Send poll
+        env:
+          GREEN_API_URL: ${{ secrets.GREEN_API_URL }}
+          GREEN_API_INSTANCE: ${{ secrets.GREEN_API_INSTANCE }}
+          GREEN_API_TOKEN: ${{ secrets.GREEN_API_TOKEN }}
+          WA_GROUP_ID: ${{ secrets.WA_GROUP_ID }}
+        run: python send_poll.py
