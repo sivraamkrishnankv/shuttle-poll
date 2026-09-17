@@ -20,7 +20,7 @@ def main():
         print("tomorrow is sunday, no shuttle, skipping")
         return
 
-    title = tmw.strftime("%d-%m-%Y") + " Tomorrow Shuttle"
+    title = "🏸 Shuttle tomorrow? You in?"
 
     body = {
         "chatId": gid,
