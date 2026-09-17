@@ -44,12 +44,15 @@ So: cron days `0-5` (Sunday through Friday). Saturday evening is the one that's 
 ```
 shuttle-poll/
 ├── send_poll.py
+├── shuttle-poll-build-doc.md
 └── .github/
     └── workflows/
         └── poll.yml
 ```
 
-That's the whole project. Two files.
+That's the whole project. Two code files plus this doc.
+
+Live repo: https://github.com/sivraamkrishnankv/shuttle-poll
 
 ---
 
@@ -78,7 +81,7 @@ def main():
         print("tomorrow is sunday, no shuttle, skipping")
         return
 
-    title = tmw.strftime("%d-%m-%Y") + " Tomorrow Shuttle"
+    title = "🏸 Playing tomorrow?"
 
     body = {
         "chatId": gid,
@@ -115,7 +118,7 @@ if __name__ == "__main__":
 - `options` takes 2–12 entries, each as `{"optionName": "..."}`. They must differ from each other by at least one character, so `Yes` / `No` is fine.
 - No external libraries — `urllib` is in the Python standard library, so the workflow needs zero `pip install` steps and runs in a couple of seconds.
 
-**Date format:** currently `17-09-2026 Tomorrow Shuttle`. If you'd rather have `17 Sep Tomorrow Shuttle`, change `"%d-%m-%Y"` to `"%d %b"`.
+**Poll title:** `🏸 Playing tomorrow?` — short, no date, reads naturally with Yes/No. `tmw` is still computed for the Sunday safety check.
 
 ---
 
@@ -126,8 +129,8 @@ name: shuttle-poll
 
 on:
   schedule:
-    - cron: '0 20 * * 0-5'
-      timezone: 'Asia/Kolkata'
+    # 14:30 UTC = 8:00 PM IST (no DST in India), Sunday through Friday
+    - cron: '30 14 * * 0-5'
   workflow_dispatch:
 
 jobs:
@@ -147,16 +150,8 @@ jobs:
         run: python send_poll.py
 ```
 
-- `cron: '0 20 * * 0-5'` = 8:00 PM, Sunday through Friday. Change `20` to whatever hour suits the group.
+- `cron: '30 14 * * 0-5'` = 14:30 UTC = 8:00 PM IST, Sunday through Friday. GitHub cron always runs in UTC, so to change the time subtract 5:30 from the IST time you want. India has no daylight saving, so this stays correct year-round.
 - `workflow_dispatch` gives you a **Run workflow** button in the Actions tab — that's how you test it without waiting for 8 PM.
-
-**If the `timezone:` field errors out** (it's a newer Actions feature), drop it and use the UTC equivalent instead — same result:
-
-```yaml
-    - cron: '30 14 * * 0-5'
-```
-
-8:00 PM IST = 14:30 UTC, and since India has no daylight saving, this stays correct year-round.
 
 ---
 
@@ -244,7 +239,7 @@ You'll get a JSON list. Find the entry with `"type": "group"` and a `"name"` mat
 - [ ] `getChats` returns the shuttle group with a `...@g.us` id
 - [ ] All four secrets exist in the repo
 - [ ] Manual **Run workflow** posts a poll to the group
-- [ ] Poll title shows **tomorrow's** date, not today's
+- [ ] Poll title reads **🏸 Playing tomorrow?**
 - [ ] Only one option can be selected per person
 - [ ] Workflow run log shows `sent:` and exits green
 - [ ] Calendar reminder set to touch the repo every ~6 weeks
