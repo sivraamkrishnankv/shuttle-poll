@@ -9,6 +9,8 @@ on:
 jobs:
   send:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,3 +23,15 @@ jobs:
           GREEN_API_TOKEN: ${{ secrets.GREEN_API_TOKEN }}
           WA_GROUP_ID: ${{ secrets.WA_GROUP_ID }}
         run: python send_poll.py
+
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Re-enable workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh api -X PUT
+          repos/${{ github.repository }}/actions/workflows/poll.yml/enable
