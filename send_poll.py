@@ -9,7 +9,7 @@ IST = timezone(timedelta(hours=5, minutes=30))
 url = os.environ["GREEN_API_URL"].rstrip("/")
 iid = os.environ["GREEN_API_INSTANCE"]
 tok = os.environ["GREEN_API_TOKEN"]
-gid = os.environ["WA_GROUP_D"]
+gid = os.environ["WA_GROUP_ID"]
 
 
 def main():
