@@ -2,8 +2,9 @@ name: shuttle-poll
 
 on:
   schedule:
-    # 14:30 UTC = 8:00 PM IST (no DST in India), Sunday through Friday
-    - cron: '30 12 * * 0-6'
+    # 6:00 PM IST, every day (timezone declared, no UTC conversion)
+    - cron: '0 18 * * *'
+      timezone: 'Asia/Kolkata'
   workflow_dispatch:
 
 jobs:
